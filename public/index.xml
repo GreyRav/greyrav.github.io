@@ -2,27 +2,89 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Blog de SRID</title>
-    <link>https://greyrav.github.io/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on Blog de SRID</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>fr</language>
-    <lastBuildDate>Fri, 13 Dec 2024 14:04:21 +0100</lastBuildDate><atom:link href="https://greyrav.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 13 Dec 2024 14:04:21 +0100</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Index</title>
-      <link>https://greyrav.github.io/posts/gen-password/</link>
+      <title>Générateur de mot de passe en Rust </title>
+      <link>http://localhost:1313/posts/gen-password/</link>
       <pubDate>Fri, 13 Dec 2024 14:04:21 +0100</pubDate>
       
-      <guid>https://greyrav.github.io/posts/gen-password/</guid>
-      <description></description>
-      <content></content>
+      <guid>http://localhost:1313/posts/gen-password/</guid>
+      <description>&lt;h1 id=&#34;un-générateur-de-mot-de-passe-mnémotechnique-en-rust&#34;&gt;Un générateur de mot de passe mnémotechnique en Rust&lt;/h1&gt;
+&lt;p&gt;La sécurité de nos comptes en ligne est cruciale, mais qui n&amp;rsquo;a jamais galéré à retenir un mot de passe du style &amp;ldquo;Kj9#mP2$vL&amp;rdquo; ? Aujourd&amp;rsquo;hui, je vous présente un projet qui allie sécurité et simplicité : un générateur de mot de passe basé sur des phrases, développé en Rust avec le framework egui.&lt;/p&gt;
+&lt;h2 id=&#34;le-concept&#34;&gt;Le concept&lt;/h2&gt;
+&lt;p&gt;L&amp;rsquo;idée est simple mais efficace : au lieu de générer un mot de passe totalement aléatoire, notre application transforme une phrase de votre choix en un mot de passe robuste. Comment ? En prenant la première lettre de chaque mot et en remplaçant certains caractères par des symboles et des chiffres.&lt;/p&gt;</description>
+      <content>&lt;h1 id=&#34;un-générateur-de-mot-de-passe-mnémotechnique-en-rust&#34;&gt;Un générateur de mot de passe mnémotechnique en Rust&lt;/h1&gt;
+&lt;p&gt;La sécurité de nos comptes en ligne est cruciale, mais qui n&amp;rsquo;a jamais galéré à retenir un mot de passe du style &amp;ldquo;Kj9#mP2$vL&amp;rdquo; ? Aujourd&amp;rsquo;hui, je vous présente un projet qui allie sécurité et simplicité : un générateur de mot de passe basé sur des phrases, développé en Rust avec le framework egui.&lt;/p&gt;
+&lt;h2 id=&#34;le-concept&#34;&gt;Le concept&lt;/h2&gt;
+&lt;p&gt;L&amp;rsquo;idée est simple mais efficace : au lieu de générer un mot de passe totalement aléatoire, notre application transforme une phrase de votre choix en un mot de passe robuste. Comment ? En prenant la première lettre de chaque mot et en remplaçant certains caractères par des symboles et des chiffres.&lt;/p&gt;
+&lt;p&gt;Par exemple, la phrase :
+&amp;ldquo;I love to code and create security tools!&amp;rdquo;
+devient :
+&amp;ldquo;1l2c&amp;amp;c$t!&amp;rdquo;&lt;/p&gt;
+&lt;h2 id=&#34;les-avantages-de-cette-approche&#34;&gt;Les avantages de cette approche&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Mémorisation facilitée&lt;/strong&gt; : Vous n&amp;rsquo;avez qu&amp;rsquo;à vous souvenir de votre phrase, le programme s&amp;rsquo;occupe de la transformation.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Personnalisation&lt;/strong&gt; : Choisissez une phrase qui a du sens pour vous.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Sécurité maintenue&lt;/strong&gt; : Les substitutions de caractères et la ponctuation conservée rendent le mot de passe complexe.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;le-code--décortiquons-les-points-clés&#34;&gt;Le code : décortiquons les points clés&lt;/h2&gt;
+&lt;h3 id=&#34;la-structure-de-données&#34;&gt;La structure de données&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;PasswordGeneratorApp&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    input_text: String,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    generated_password: String,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Notre application est minimaliste : elle ne stocke que le texte d&amp;rsquo;entrée et le mot de passe généré.&lt;/p&gt;
+&lt;h3 id=&#34;la-logique-de-génération&#34;&gt;La logique de génération&lt;/h3&gt;
+&lt;p&gt;Le cœur de notre application réside dans la méthode &lt;code&gt;generate_password&lt;/code&gt;. Elle procède en deux étapes :&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Substitution des mots et caractères&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Remplacement de mots complets (&amp;ldquo;and&amp;rdquo; → &amp;ldquo;&amp;amp;&amp;rdquo;, &amp;ldquo;to&amp;rdquo; → &amp;ldquo;2&amp;rdquo;, etc.)&lt;/li&gt;
+&lt;li&gt;Substitution de caractères (&amp;ldquo;a&amp;rdquo; → &amp;ldquo;@&amp;rdquo;, &amp;ldquo;i&amp;rdquo; → &amp;ldquo;1&amp;rdquo;, etc.)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Extraction des premières lettres&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Conservation de la ponctuation&lt;/li&gt;
+&lt;li&gt;Prise en compte des espaces pour identifier les nouveaux mots&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;linterface-utilisateur&#34;&gt;L&amp;rsquo;interface utilisateur&lt;/h3&gt;
+&lt;p&gt;Grâce au framework egui, nous avons une interface graphique simple et efficace avec :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Une zone de texte pour entrer la phrase&lt;/li&gt;
+&lt;li&gt;Un bouton de génération&lt;/li&gt;
+&lt;li&gt;Un affichage clair du résultat&lt;/li&gt;
+&lt;li&gt;Un bouton de copie pour faciliter l&amp;rsquo;utilisation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/posts/gen-password/exemple.png&#34; alt=&#34;Exemple de l&amp;rsquo;interface&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;perspectives-damélioration&#34;&gt;Perspectives d&amp;rsquo;amélioration&lt;/h2&gt;
+&lt;p&gt;Ce projet pourrait être enrichi de plusieurs façons :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ajout de règles de substitution personnalisables&lt;/li&gt;
+&lt;li&gt;Vérification de la force du mot de passe généré&lt;/li&gt;
+&lt;li&gt;Support multilingue plus étendu&lt;/li&gt;
+&lt;li&gt;Export/import des règles de substitution&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Ce générateur de mot de passe propose une approche rafraîchissante de la gestion des mots de passe. En combinant la puissance de Rust, la simplicité d&amp;rsquo;egui et une approche mnémotechnique, nous obtenons un outil pratique qui réconcilie sécurité et facilité d&amp;rsquo;utilisation.&lt;/p&gt;
+&lt;p&gt;N&amp;rsquo;hésitez pas à contribuer au projet ou à l&amp;rsquo;adapter à vos besoins. Le code source complet est disponible sur &lt;a href=&#34;https://github.com/GreyRav/gen-password&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+</content>
     </item>
     
     <item>
       <title>Media Player</title>
-      <link>https://greyrav.github.io/posts/media-player/</link>
+      <link>http://localhost:1313/posts/media-player/</link>
       <pubDate>Thu, 12 Dec 2024 13:51:16 +0100</pubDate>
       
-      <guid>https://greyrav.github.io/posts/media-player/</guid>
+      <guid>http://localhost:1313/posts/media-player/</guid>
       <description>&lt;p&gt;Bonjour à tous et bienvenue sur mon blog concernant le Media Player. Le Media Player est un outil que je voulais concevoir afin de faire des projets d&amp;rsquo;apprentissage.&lt;/p&gt;
 &lt;h2 id=&#34;quel-est-son-but-&#34;&gt;Quel est son but ?&lt;/h2&gt;
 &lt;p&gt;Son but est simplement de pouvoir changer de musique/vidéo, et mettre lecture/pause. On peut bien évidemment changer le code pour en faire totalement autre chose comme par exemple un mini stream deck ou autre.&lt;/p&gt;
@@ -181,8 +243,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Vous trouverez directement tout le projet sur GitHub &lt;a href=&#34;https://github.com/GreyRav/media-player/tree/main&#34;&gt;ICI&lt;/a&gt;, avec tous les frameworks, librairies et autres.&lt;/p&gt;
 &lt;p&gt;Voici à quoi ressemble la PCB :&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://greyrav.github.io/posts/media-player/image1.png&#34; alt=&#34;PCB vue 1&#34;&gt;
-&lt;img src=&#34;https://greyrav.github.io/posts/media-player/image2.png&#34; alt=&#34;PCB vue 2&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/posts/media-player/image1.png&#34; alt=&#34;PCB vue 1&#34;&gt;
+&lt;img src=&#34;http://localhost:1313/posts/media-player/image2.png&#34; alt=&#34;PCB vue 2&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Si vous voulez l&amp;rsquo;acheter pour soutenir le projet ou alors vous amuser avec, vous la retrouverez sur mon site : &lt;a href=&#34;https://openandhack.fr&#34;&gt;Open &amp;amp; Hack&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Merci d&amp;rsquo;avoir pris le temps de lire ce post !&lt;/p&gt;
 </content>
@@ -190,10 +252,10 @@
     
     <item>
       <title>À propos</title>
-      <link>https://greyrav.github.io/about/</link>
+      <link>http://localhost:1313/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://greyrav.github.io/about/</guid>
+      <guid>http://localhost:1313/about/</guid>
       <description>&lt;h1 id=&#34;partage--apprentissage&#34;&gt;Partage &amp;amp; Apprentissage&lt;/h1&gt;
 &lt;p&gt;Ce blog est un espace où je partage mes projets personnels en électronique, programmation et DIY. Mon but est double : documenter mes créations et échanger avec la communauté.&lt;/p&gt;
 &lt;p&gt;En partageant mes expériences, succès comme échecs, j&amp;rsquo;espère non seulement aider d&amp;rsquo;autres passionnés, mais aussi recevoir des retours qui me permettront de m&amp;rsquo;améliorer.&lt;/p&gt;

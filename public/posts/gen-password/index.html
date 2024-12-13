@@ -1,66 +1,68 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   
-    <title>Index :: Blog de SRID</title>
+    <title>Générateur de mot de passe en Rust  :: Blog de SRID</title>
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Generateur de mot de passe codé en Rust" />
-<meta name="keywords" content=", " />
+<meta name="description" content="Un générateur de mot de passe mnémotechnique en Rust La sécurité de nos comptes en ligne est cruciale, mais qui n&rsquo;a jamais galéré à retenir un mot de passe du style &ldquo;Kj9#mP2$vL&rdquo; ? Aujourd&rsquo;hui, je vous présente un projet qui allie sécurité et simplicité : un générateur de mot de passe basé sur des phrases, développé en Rust avec le framework egui.
+Le concept L&rsquo;idée est simple mais efficace : au lieu de générer un mot de passe totalement aléatoire, notre application transforme une phrase de votre choix en un mot de passe robuste. Comment ? En prenant la première lettre de chaque mot et en remplaçant certains caractères par des symboles et des chiffres.
+" />
+<meta name="keywords" content="" />
 
   <meta name="robots" content="noodp" />
 
-<link rel="canonical" href="https://greyrav.github.io/posts/gen-password/" />
+<link rel="canonical" href="http://localhost:1313/posts/gen-password/" />
 
 
 
 
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/custom.min.f259510107a2eaa42189bb547cec7eb633886150924209e0ebb2272b57c29e0c.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/custom.min.f259510107a2eaa42189bb547cec7eb633886150924209e0ebb2272b57c29e0c.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/buttons.min.2bc533403a27dfe0e93105a92502b42ce4587e2e4a87d9f7d349e51e16e09478.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/buttons.min.2bc533403a27dfe0e93105a92502b42ce4587e2e4a87d9f7d349e51e16e09478.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/code.min.00125962708925857e7b66dbc58391d55be1191a3d0ce2034de8c9cd2c481c36.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/code.min.00125962708925857e7b66dbc58391d55be1191a3d0ce2034de8c9cd2c481c36.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/fonts.min.4881f0c525f3ce2a1864fb6e96676396cebe1e6fcef1933e8e1dde7041004fb5.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/fonts.min.4881f0c525f3ce2a1864fb6e96676396cebe1e6fcef1933e8e1dde7041004fb5.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/footer.min.2e3eb191baee58dd05a9f0104ac1fab0827bca7c64dafe0b2579f934c33a1d69.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/footer.min.2e3eb191baee58dd05a9f0104ac1fab0827bca7c64dafe0b2579f934c33a1d69.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/header.min.b6fb4423cf82a9f9d7abc9cd010223fa3d70a6526a3f28f8e17d814c06e18f9e.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/header.min.b6fb4423cf82a9f9d7abc9cd010223fa3d70a6526a3f28f8e17d814c06e18f9e.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/main.min.fe8dc560fccb53a458b0db19ccb7b265764ac46b68596b7e099c6793054dd457.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/main.min.fe8dc560fccb53a458b0db19ccb7b265764ac46b68596b7e099c6793054dd457.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/menu.min.83637a90d903026bc280d3f82f96ceb06c5fc72b7c1a8d686afb5bbf818a29f7.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/menu.min.83637a90d903026bc280d3f82f96ceb06c5fc72b7c1a8d686afb5bbf818a29f7.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/pagination.min.82f6400eae7c7c6dc3c866733c2ec0579e4089608fea69400ff85b3880aa0d3c.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/pagination.min.82f6400eae7c7c6dc3c866733c2ec0579e4089608fea69400ff85b3880aa0d3c.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/post.min.fc74ca360273c1d828da3c02b8174eba435607b369d98418ccc6f2243cd4e75d.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/post.min.fc74ca360273c1d828da3c02b8174eba435607b369d98418ccc6f2243cd4e75d.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/prism.min.9023bbc24533d09e97a51a0a42a5a7bfe4c591ae167c5551fb1d2191d11977c0.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/prism.min.9023bbc24533d09e97a51a0a42a5a7bfe4c591ae167c5551fb1d2191d11977c0.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/syntax.min.cc789ed9377260d7949ea4c18781fc58959a89287210fe4edbff44ebfc1511b6.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/syntax.min.cc789ed9377260d7949ea4c18781fc58959a89287210fe4edbff44ebfc1511b6.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/terminal.min.dd0bf9c7cacb24c1b0184f52f1869b274e06689557468cc7030ccf632328eb97.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/terminal.min.dd0bf9c7cacb24c1b0184f52f1869b274e06689557468cc7030ccf632328eb97.css">
 
   
-  <link rel="stylesheet" href="https://greyrav.github.io/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
 
 
 
@@ -68,8 +70,8 @@
 
 
 
-<link rel="shortcut icon" href="https://greyrav.github.io/favicon.png">
-<link rel="apple-touch-icon" href="https://greyrav.github.io/apple-touch-icon.png">
+<link rel="shortcut icon" href="http://localhost:1313/favicon.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
 
 
 <meta name="twitter:card" content="summary" />
@@ -78,14 +80,14 @@
 
 <meta property="og:locale" content="fr" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="Index">
-<meta property="og:description" content="Generateur de mot de passe codé en Rust" />
-<meta property="og:url" content="https://greyrav.github.io/posts/gen-password/" />
+<meta property="og:title" content="Générateur de mot de passe en Rust ">
+<meta property="og:description" content="Un générateur de mot de passe mnémotechnique en Rust La sécurité de nos comptes en ligne est cruciale, mais qui n&rsquo;a jamais galéré à retenir un mot de passe du style &ldquo;Kj9#mP2$vL&rdquo; ? Aujourd&rsquo;hui, je vous présente un projet qui allie sécurité et simplicité : un générateur de mot de passe basé sur des phrases, développé en Rust avec le framework egui.
+Le concept L&rsquo;idée est simple mais efficace : au lieu de générer un mot de passe totalement aléatoire, notre application transforme une phrase de votre choix en un mot de passe robuste. Comment ? En prenant la première lettre de chaque mot et en remplaçant certains caractères par des symboles et des chiffres.
+" />
+<meta property="og:url" content="http://localhost:1313/posts/gen-password/" />
 <meta property="og:site_name" content="Blog de SRID" />
 
-  
-  
-  <meta property="og:image" content="https://greyrav.github.io/">
+  <meta property="og:image" content="http://localhost:1313/og-image.png">
 
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
@@ -168,25 +170,78 @@
     
 <article class="post">
   <h1 class="post-title">
-    <a href="https://greyrav.github.io/posts/gen-password/">Index</a>
+    <a href="http://localhost:1313/posts/gen-password/">Générateur de mot de passe en Rust</a>
   </h1>
-  <div class="post-meta"><time class="post-date">2024-12-13</time><span class="post-author">SRID</span></div>
+  <div class="post-meta"><time class="post-date">2024-12-13</time></div>
 
-  
-    <span class="post-tags">
-      
-      #<a href="https://greyrav.github.io/tags/"></a>&nbsp;
-      
-      #<a href="https://greyrav.github.io/tags/"></a>&nbsp;
-      
-    </span>
   
   
 
 
   
 
-  <div class="post-content"></div>
+  <div class="post-content"><div>
+        <h1 id="un-générateur-de-mot-de-passe-mnémotechnique-en-rust">Un générateur de mot de passe mnémotechnique en Rust<a href="#un-générateur-de-mot-de-passe-mnémotechnique-en-rust" class="hanchor" ariaLabel="Anchor">#</a> </h1>
+<p>La sécurité de nos comptes en ligne est cruciale, mais qui n&rsquo;a jamais galéré à retenir un mot de passe du style &ldquo;Kj9#mP2$vL&rdquo; ? Aujourd&rsquo;hui, je vous présente un projet qui allie sécurité et simplicité : un générateur de mot de passe basé sur des phrases, développé en Rust avec le framework egui.</p>
+<h2 id="le-concept">Le concept<a href="#le-concept" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>L&rsquo;idée est simple mais efficace : au lieu de générer un mot de passe totalement aléatoire, notre application transforme une phrase de votre choix en un mot de passe robuste. Comment ? En prenant la première lettre de chaque mot et en remplaçant certains caractères par des symboles et des chiffres.</p>
+<p>Par exemple, la phrase :
+&ldquo;I love to code and create security tools!&rdquo;
+devient :
+&ldquo;1l2c&amp;c$t!&rdquo;</p>
+<h2 id="les-avantages-de-cette-approche">Les avantages de cette approche<a href="#les-avantages-de-cette-approche" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<ol>
+<li><strong>Mémorisation facilitée</strong> : Vous n&rsquo;avez qu&rsquo;à vous souvenir de votre phrase, le programme s&rsquo;occupe de la transformation.</li>
+<li><strong>Personnalisation</strong> : Choisissez une phrase qui a du sens pour vous.</li>
+<li><strong>Sécurité maintenue</strong> : Les substitutions de caractères et la ponctuation conservée rendent le mot de passe complexe.</li>
+</ol>
+<h2 id="le-code--décortiquons-les-points-clés">Le code : décortiquons les points clés<a href="#le-code--décortiquons-les-points-clés" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<h3 id="la-structure-de-données">La structure de données<a href="#la-structure-de-données" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">PasswordGeneratorApp</span> {
+</span></span><span style="display:flex;"><span>    input_text: String,
+</span></span><span style="display:flex;"><span>    generated_password: String,
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Notre application est minimaliste : elle ne stocke que le texte d&rsquo;entrée et le mot de passe généré.</p>
+<h3 id="la-logique-de-génération">La logique de génération<a href="#la-logique-de-génération" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<p>Le cœur de notre application réside dans la méthode <code>generate_password</code>. Elle procède en deux étapes :</p>
+<ol>
+<li>
+<p><strong>Substitution des mots et caractères</strong> :</p>
+<ul>
+<li>Remplacement de mots complets (&ldquo;and&rdquo; → &ldquo;&amp;&rdquo;, &ldquo;to&rdquo; → &ldquo;2&rdquo;, etc.)</li>
+<li>Substitution de caractères (&ldquo;a&rdquo; → &ldquo;@&rdquo;, &ldquo;i&rdquo; → &ldquo;1&rdquo;, etc.)</li>
+</ul>
+</li>
+<li>
+<p><strong>Extraction des premières lettres</strong> :</p>
+<ul>
+<li>Conservation de la ponctuation</li>
+<li>Prise en compte des espaces pour identifier les nouveaux mots</li>
+</ul>
+</li>
+</ol>
+<h3 id="linterface-utilisateur">L&rsquo;interface utilisateur<a href="#linterface-utilisateur" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<p>Grâce au framework egui, nous avons une interface graphique simple et efficace avec :</p>
+<ul>
+<li>Une zone de texte pour entrer la phrase</li>
+<li>Un bouton de génération</li>
+<li>Un affichage clair du résultat</li>
+<li>Un bouton de copie pour faciliter l&rsquo;utilisation</li>
+</ul>
+<p><img src="/posts/gen-password/exemple.png" alt="Exemple de l&rsquo;interface"></p>
+<h2 id="perspectives-damélioration">Perspectives d&rsquo;amélioration<a href="#perspectives-damélioration" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Ce projet pourrait être enrichi de plusieurs façons :</p>
+<ul>
+<li>Ajout de règles de substitution personnalisables</li>
+<li>Vérification de la force du mot de passe généré</li>
+<li>Support multilingue plus étendu</li>
+<li>Export/import des règles de substitution</li>
+</ul>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Ce générateur de mot de passe propose une approche rafraîchissante de la gestion des mots de passe. En combinant la puissance de Rust, la simplicité d&rsquo;egui et une approche mnémotechnique, nous obtenons un outil pratique qui réconcilie sécurité et facilité d&rsquo;utilisation.</p>
+<p>N&rsquo;hésitez pas à contribuer au projet ou à l&rsquo;adapter à vos besoins. Le code source complet est disponible sur <a href="https://github.com/GreyRav/gen-password">GitHub</a>.</p>
+
+      </div></div>
 
   
 
