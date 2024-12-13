@@ -2,12 +2,18 @@
 @import url(https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css);
 
 :root {
-  --background: #1c1c1c;
-  --foreground: #ffffff;
-  --accent: #b061ff;
-  --radius: 0;
-  --font-size: 1rem;
-  --line-height: 1.54em;
+  --background: #1c1c1c !important;
+  --foreground: #ffffff !important;
+  --accent: #b061ff !important;
+  --radius: 0 !important;
+  --font-size: 1rem !important;
+  --line-height: 1.54em !important;
+}
+[data-theme="dark"],
+[data-theme="light"] {
+  --accent: #b061ff !important;
+  --background: #1c1c1c !important;
+  --foreground: #ffffff !important;
 }
 
 html {
