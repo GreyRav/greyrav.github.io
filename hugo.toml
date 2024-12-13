@@ -1,0 +1,42 @@
+baseURL = "https://srid.github.io"
+languageCode = "fr-FR"
+defaultContentLanguage = "fr"
+title = "Blog de SRID"
+theme = "terminal"
+
+[params]
+  # Couleur du thème : "orange" | "blue" | "red" | "green" | "pink"
+  customCSS = ["css/custom.css"]
+  themeColor = "default"
+  
+  # Si vous voulez le mode sombre
+  showMenuItems = 2
+  fullWidthTheme = false
+  centerTheme = true
+  
+  # Votre nom/pseudo
+  author = "SRID"
+  
+[languages]
+  [languages.fr]
+    title = "Blog de SRID"
+    subtitle = "Un blog sur mes projets"
+    keywords = ""
+    copyright = ""
+    menuMore = "Voir plus"
+    readMore = "Lire plus"
+    readOtherPosts = "Lire d'autres articles"
+
+    [languages.fr.params.logo]
+      logoText = "Blog de SRID"
+      logoHomeLink = "/"
+
+    [languages.fr.menu]
+      [[languages.fr.menu.main]]
+        identifier = "about"
+        name = "À propos"
+        url = "/about"
+      [[languages.fr.menu.main]]
+        identifier = "posts"
+        name = "Articles"
+        url = "/posts"

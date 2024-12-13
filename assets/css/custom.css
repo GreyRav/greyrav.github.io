@@ -1,0 +1,43 @@
+:root {
+  --accent: #9D4EDD !important;
+  --background: #1a1a1a !important;  /* Fond noir */
+  --color: #ffffff !important;       /* Texte blanc */
+  --border-color: #9D4EDD !important;
+  
+  /* Autres variables pour la cohérence */
+  --header-background: var(--background) !important;
+  --header-color: #ffffff !important;
+  --content: #ffffff !important;
+  --content-pre-color: #9D4EDD !important;
+}
+
+/* Pour les liens */
+a {
+  color: #9D4EDD !important;
+}
+
+/* Pour les bordures */
+.header {
+  border-color: #9D4EDD !important;
+}
+
+/* Pour le survol des liens */
+a:hover {
+  background-color: #9D4EDD !important;
+  color: #1a1a1a !important;
+}
+
+/* Pour les blocs de code */
+pre {
+  background-color: #2d2d2d !important;
+}
+
+/* Pour le texte des articles */
+.post p {
+  color: #ffffff !important;
+}
+
+/* Pour les titres */
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff !important;
+}
