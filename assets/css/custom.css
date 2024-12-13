@@ -11,9 +11,9 @@
 }
 [data-theme="dark"],
 [data-theme="light"] {
-  --accent: #b061ff !important;
+  --accent: #a64dff !important;
   --background: #1a170f !important;
-  --foreground: #ffffff !important;
+  --foreground: #eceae5 !important;
 }
 
 html {
