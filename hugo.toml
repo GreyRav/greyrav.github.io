@@ -9,7 +9,7 @@ paginate = 5
   # Couleur du thème : "orange" | "blue" | "red" | "green" | "pink"
   customCSS = ["css/custom.css"]
   themeColor = "default"
-  favicon = "/site-favicon.ico"
+  favicon = "/favicon.ico"
 
   # Si vous voulez le mode sombre
   showMenuItems = 2
