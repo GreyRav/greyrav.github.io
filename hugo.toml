@@ -7,7 +7,7 @@ paginate = 5
 
 [params]
   # Couleur du thème : "orange" | "blue" | "red" | "green" | "pink"
-  #customCSS = ["css/custom.css"]
+  customCSS = ["css/custom.css"]
   #themeColor = ["css/custom.css"]
   
   # Si vous voulez le mode sombre
