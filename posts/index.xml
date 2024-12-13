@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Blog de SRID</title><link>https://srid.github.io/posts/</link><description>Recent content in Posts on Blog de SRID</description><generator>Hugo -- gohugo.io</generator><language>fr</language><lastBuildDate>Thu, 12 Dec 2024 13:51:16 +0100</lastBuildDate><atom:link href="https://srid.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Media Player</title><link>https://srid.github.io/posts/media-player/</link><pubDate>Thu, 12 Dec 2024 13:51:16 +0100</pubDate><guid>https://srid.github.io/posts/media-player/</guid><description>&lt;p>Bonjour à tous et bienvenue sur mon blog concernant le Media Player. Le Media Player est un outil que je voulais concevoir afin de faire des projets d&amp;rsquo;apprentissage.&lt;/p>
+&lt;h2 id="quel-est-son-but-">Quel est son but ?&lt;/h2>
+&lt;p>Son but est simplement de pouvoir changer de musique/vidéo, et mettre lecture/pause. On peut bien évidemment changer le code pour en faire totalement autre chose comme par exemple un mini stream deck ou autre.&lt;/p>
+&lt;h2 id="quels-sont-les-composants-principaux-">Quels sont les composants principaux ?&lt;/h2>
+&lt;p>Les composants/matériaux principaux sont tout simplement un écran SSD1315, un Arduino pro micro, et des boutons classiques (G-Switch GT-TC075B-H100-L1).&lt;/p></description><content>&lt;p>Bonjour à tous et bienvenue sur mon blog concernant le Media Player. Le Media Player est un outil que je voulais concevoir afin de faire des projets d&amp;rsquo;apprentissage.&lt;/p>
+&lt;h2 id="quel-est-son-but-">Quel est son but ?&lt;/h2>
+&lt;p>Son but est simplement de pouvoir changer de musique/vidéo, et mettre lecture/pause. On peut bien évidemment changer le code pour en faire totalement autre chose comme par exemple un mini stream deck ou autre.&lt;/p>
+&lt;h2 id="quels-sont-les-composants-principaux-">Quels sont les composants principaux ?&lt;/h2>
+&lt;p>Les composants/matériaux principaux sont tout simplement un écran SSD1315, un Arduino pro micro, et des boutons classiques (G-Switch GT-TC075B-H100-L1).&lt;/p>
+&lt;p>En ce qui concerne le code ci-dessous, celui-ci est fait en C++ avec le framework IDE PlatformIO et Arduino IDE, sur VS Code :&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;Arduino.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;HID-Project.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;U8g2lib.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;Wire.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> PREV_BTN &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">5&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> PLAY_BTN &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">6&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> NEXT_BTN &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">7&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>U8G2_SSD1306_128X64_NONAME_F_HW_I2C &lt;span style="color:#a6e22e">u8g2&lt;/span>(U8G2_R0);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Variables d&amp;#39;état
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">bool&lt;/span> isPlaying &lt;span style="color:#f92672">=&lt;/span> false;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>String currentAction &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Ready&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> lastActionTime &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> ACTION_DISPLAY_TIME &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">1000&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Variables pour l&amp;#39;animation de la barre de progression
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">int&lt;/span> progressBarPosition &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> PROGRESS_BAR_WIDTH &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">120&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> lastProgressUpdate &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> PROGRESS_UPDATE_INTERVAL &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">100&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Variables pour les effets de transition
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">int&lt;/span> transitionStep &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">bool&lt;/span> inTransition &lt;span style="color:#f92672">=&lt;/span> false;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>String nextAction &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">setup&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Wire.begin();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pinMode(PREV_BTN, INPUT_PULLUP);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pinMode(PLAY_BTN, INPUT_PULLUP);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pinMode(NEXT_BTN, INPUT_PULLUP);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Consumer.begin();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.begin();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">drawPlayTriangle&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> x, &lt;span style="color:#66d9ef">int&lt;/span> y, &lt;span style="color:#66d9ef">int&lt;/span> size) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> height &lt;span style="color:#f92672">=&lt;/span> size &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">1.5&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.drawTriangle(x, y, x &lt;span style="color:#f92672">+&lt;/span> size, y &lt;span style="color:#f92672">+&lt;/span> (height&lt;span style="color:#f92672">/&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>), x, y &lt;span style="color:#f92672">+&lt;/span> height);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.drawTriangle(x&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, y&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, x &lt;span style="color:#f92672">+&lt;/span> size&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, y &lt;span style="color:#f92672">+&lt;/span> (height&lt;span style="color:#f92672">/&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>), x&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, y &lt;span style="color:#f92672">+&lt;/span> height&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">drawPauseIcon&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> x, &lt;span style="color:#66d9ef">int&lt;/span> y, &lt;span style="color:#66d9ef">int&lt;/span> width, &lt;span style="color:#66d9ef">int&lt;/span> height) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.drawBox(x, y, width, height);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.drawBox(x &lt;span style="color:#f92672">+&lt;/span> width &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">4&lt;/span>, y, width, height);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">drawArrow&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> x, &lt;span style="color:#66d9ef">int&lt;/span> y, &lt;span style="color:#66d9ef">int&lt;/span> size, &lt;span style="color:#66d9ef">bool&lt;/span> right) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (right) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.drawLine(x, y, x &lt;span style="color:#f92672">+&lt;/span> size, y &lt;span style="color:#f92672">+&lt;/span> size&lt;span style="color:#f92672">/&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.drawLine(x &lt;span style="color:#f92672">+&lt;/span> size, y &lt;span style="color:#f92672">+&lt;/span> size&lt;span style="color:#f92672">/&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>, x, y &lt;span style="color:#f92672">+&lt;/span> size);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.drawLine(x &lt;span style="color:#f92672">+&lt;/span> size, y, x, y &lt;span style="color:#f92672">+&lt;/span> size&lt;span style="color:#f92672">/&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.drawLine(x, y &lt;span style="color:#f92672">+&lt;/span> size&lt;span style="color:#f92672">/&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>, x &lt;span style="color:#f92672">+&lt;/span> size, y &lt;span style="color:#f92672">+&lt;/span> size);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">drawProgressBar&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.drawFrame(&lt;span style="color:#ae81ff">4&lt;/span>, &lt;span style="color:#ae81ff">25&lt;/span>, PROGRESS_BAR_WIDTH, &lt;span style="color:#ae81ff">6&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (isPlaying) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.drawBox(&lt;span style="color:#ae81ff">4&lt;/span>, &lt;span style="color:#ae81ff">25&lt;/span>, progressBarPosition, &lt;span style="color:#ae81ff">6&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (millis() &lt;span style="color:#f92672">-&lt;/span> lastProgressUpdate &lt;span style="color:#f92672">&amp;gt;&lt;/span> PROGRESS_UPDATE_INTERVAL) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> progressBarPosition&lt;span style="color:#f92672">++&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (progressBarPosition &lt;span style="color:#f92672">&amp;gt;&lt;/span> PROGRESS_BAR_WIDTH) progressBarPosition &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lastProgressUpdate &lt;span style="color:#f92672">=&lt;/span> millis();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">drawMainScreen&lt;/span>(&lt;span style="color:#66d9ef">bool&lt;/span> drawText &lt;span style="color:#f92672">=&lt;/span> true) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.clearBuffer();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Cadre principal
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> u8g2.drawRFrame(&lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">128&lt;/span>, &lt;span style="color:#ae81ff">64&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.drawLine(&lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">16&lt;/span>, &lt;span style="color:#ae81ff">128&lt;/span>, &lt;span style="color:#ae81ff">16&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Titre
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> u8g2.setFont(u8g2_font_profont12_tr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.drawStr(&lt;span style="color:#ae81ff">4&lt;/span>, &lt;span style="color:#ae81ff">12&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;Media Controller&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Barre de progression
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> drawProgressBar();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Texte d&amp;#39;état
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">if&lt;/span> (drawText) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.setFont(u8g2_font_profont11_tr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> textWidth &lt;span style="color:#f92672">=&lt;/span> u8g2.getStrWidth(currentAction.c_str());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.drawStr((&lt;span style="color:#ae81ff">128&lt;/span>&lt;span style="color:#f92672">-&lt;/span>textWidth)&lt;span style="color:#f92672">/&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">40&lt;/span>, currentAction.c_str());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Contrôles
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> drawArrow(&lt;span style="color:#ae81ff">20&lt;/span>, &lt;span style="color:#ae81ff">45&lt;/span>, &lt;span style="color:#ae81ff">12&lt;/span>, false);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (isPlaying) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> drawPauseIcon(&lt;span style="color:#ae81ff">58&lt;/span>, &lt;span style="color:#ae81ff">45&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>, &lt;span style="color:#ae81ff">12&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> drawPlayTriangle(&lt;span style="color:#ae81ff">58&lt;/span>, &lt;span style="color:#ae81ff">45&lt;/span>, &lt;span style="color:#ae81ff">12&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> drawArrow(&lt;span style="color:#ae81ff">96&lt;/span>, &lt;span style="color:#ae81ff">45&lt;/span>, &lt;span style="color:#ae81ff">12&lt;/span>, true);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u8g2.sendBuffer();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">setAction&lt;/span>(String action, &lt;span style="color:#66d9ef">bool&lt;/span> temporary &lt;span style="color:#f92672">=&lt;/span> false) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> currentAction &lt;span style="color:#f92672">=&lt;/span> action;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (temporary) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lastActionTime &lt;span style="color:#f92672">=&lt;/span> millis();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> drawMainScreen();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">loop&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Gestion des boutons
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">if&lt;/span> (digitalRead(PREV_BTN) &lt;span style="color:#f92672">==&lt;/span> LOW) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Consumer.write(MEDIA_PREVIOUS);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> setAction(&lt;span style="color:#e6db74">&amp;#34;Previous Track&amp;#34;&lt;/span>, true);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> delay(&lt;span style="color:#ae81ff">200&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Consumer.releaseAll();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (digitalRead(PLAY_BTN) &lt;span style="color:#f92672">==&lt;/span> LOW) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Consumer.write(MEDIA_PLAY_PAUSE);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> isPlaying &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#f92672">!&lt;/span>isPlaying;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> progressBarPosition &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> setAction(isPlaying &lt;span style="color:#f92672">?&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Playing&amp;#34;&lt;/span> &lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Paused&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> delay(&lt;span style="color:#ae81ff">200&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Consumer.releaseAll();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (digitalRead(NEXT_BTN) &lt;span style="color:#f92672">==&lt;/span> LOW) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Consumer.write(MEDIA_NEXT);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> setAction(&lt;span style="color:#e6db74">&amp;#34;Next Track&amp;#34;&lt;/span>, true);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> delay(&lt;span style="color:#ae81ff">200&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Consumer.releaseAll();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Retour à l&amp;#39;état normal après le délai pour les actions temporaires
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">if&lt;/span> (millis() &lt;span style="color:#f92672">-&lt;/span> lastActionTime &lt;span style="color:#f92672">&amp;gt;&lt;/span> ACTION_DISPLAY_TIME &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (currentAction &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Previous Track&amp;#34;&lt;/span> &lt;span style="color:#f92672">||&lt;/span> currentAction &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Next Track&amp;#34;&lt;/span>)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> setAction(isPlaying &lt;span style="color:#f92672">?&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Playing&amp;#34;&lt;/span> &lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Paused&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Mise à jour normale de l&amp;#39;écran
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> drawMainScreen();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Vous trouverez directement tout le projet sur GitHub &lt;a href="https://github.com/GreyRav/media-player/tree/main">ICI&lt;/a>, avec tous les frameworks, librairies et autres.&lt;/p>
+&lt;p>Voici à quoi ressemble la PCB :&lt;/p>
+&lt;p>&lt;img src="https://srid.github.io/posts/media-player/image1.png" alt="PCB vue 1">
+&lt;img src="https://srid.github.io/posts/media-player/image2.png" alt="PCB vue 2">&lt;/p>
+&lt;p>Si vous voulez l&amp;rsquo;acheter pour soutenir le projet ou alors vous amuser avec, vous la retrouverez sur mon site : &lt;a href="https://openandhack.fr">Open &amp;amp; Hack&lt;/a>&lt;/p>
+&lt;p>Merci d&amp;rsquo;avoir pris le temps de lire ce post !&lt;/p></content></item></channel></rss>
