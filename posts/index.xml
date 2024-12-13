@@ -1,4 +1,65 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Blog de SRID</title><link>https://greyrav.github.io/posts/</link><description>Recent content in Posts on Blog de SRID</description><generator>Hugo -- gohugo.io</generator><language>fr</language><lastBuildDate>Fri, 13 Dec 2024 14:04:21 +0100</lastBuildDate><atom:link href="https://greyrav.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Index</title><link>https://greyrav.github.io/posts/gen-password/</link><pubDate>Fri, 13 Dec 2024 14:04:21 +0100</pubDate><guid>https://greyrav.github.io/posts/gen-password/</guid><description/><content/></item><item><title>Media Player</title><link>https://greyrav.github.io/posts/media-player/</link><pubDate>Thu, 12 Dec 2024 13:51:16 +0100</pubDate><guid>https://greyrav.github.io/posts/media-player/</guid><description>&lt;p>Bonjour à tous et bienvenue sur mon blog concernant le Media Player. Le Media Player est un outil que je voulais concevoir afin de faire des projets d&amp;rsquo;apprentissage.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Blog de SRID</title><link>https://greyrav.github.io/posts/</link><description>Recent content in Posts on Blog de SRID</description><generator>Hugo -- gohugo.io</generator><language>fr</language><lastBuildDate>Fri, 13 Dec 2024 14:04:21 +0100</lastBuildDate><atom:link href="https://greyrav.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Générateur de mot de passe en Rust</title><link>https://greyrav.github.io/posts/gen-password/</link><pubDate>Fri, 13 Dec 2024 14:04:21 +0100</pubDate><guid>https://greyrav.github.io/posts/gen-password/</guid><description>&lt;h1 id="un-générateur-de-mot-de-passe-mnémotechnique-en-rust">Un générateur de mot de passe mnémotechnique en Rust&lt;/h1>
+&lt;p>La sécurité de nos comptes en ligne est cruciale, mais qui n&amp;rsquo;a jamais galéré à retenir un mot de passe du style &amp;ldquo;Kj9#mP2$vL&amp;rdquo; ? Aujourd&amp;rsquo;hui, je vous présente un projet qui allie sécurité et simplicité : un générateur de mot de passe basé sur des phrases, développé en Rust avec le framework egui.&lt;/p>
+&lt;h2 id="le-concept">Le concept&lt;/h2>
+&lt;p>L&amp;rsquo;idée est simple mais efficace : au lieu de générer un mot de passe totalement aléatoire, notre application transforme une phrase de votre choix en un mot de passe robuste. Comment ? En prenant la première lettre de chaque mot et en remplaçant certains caractères par des symboles et des chiffres.&lt;/p></description><content>&lt;h1 id="un-générateur-de-mot-de-passe-mnémotechnique-en-rust">Un générateur de mot de passe mnémotechnique en Rust&lt;/h1>
+&lt;p>La sécurité de nos comptes en ligne est cruciale, mais qui n&amp;rsquo;a jamais galéré à retenir un mot de passe du style &amp;ldquo;Kj9#mP2$vL&amp;rdquo; ? Aujourd&amp;rsquo;hui, je vous présente un projet qui allie sécurité et simplicité : un générateur de mot de passe basé sur des phrases, développé en Rust avec le framework egui.&lt;/p>
+&lt;h2 id="le-concept">Le concept&lt;/h2>
+&lt;p>L&amp;rsquo;idée est simple mais efficace : au lieu de générer un mot de passe totalement aléatoire, notre application transforme une phrase de votre choix en un mot de passe robuste. Comment ? En prenant la première lettre de chaque mot et en remplaçant certains caractères par des symboles et des chiffres.&lt;/p>
+&lt;p>Par exemple, la phrase :
+&amp;ldquo;I love to code and create security tools!&amp;rdquo;
+devient :
+&amp;ldquo;1l2c&amp;amp;c$t!&amp;rdquo;&lt;/p>
+&lt;h2 id="les-avantages-de-cette-approche">Les avantages de cette approche&lt;/h2>
+&lt;ol>
+&lt;li>&lt;strong>Mémorisation facilitée&lt;/strong> : Vous n&amp;rsquo;avez qu&amp;rsquo;à vous souvenir de votre phrase, le programme s&amp;rsquo;occupe de la transformation.&lt;/li>
+&lt;li>&lt;strong>Personnalisation&lt;/strong> : Choisissez une phrase qui a du sens pour vous.&lt;/li>
+&lt;li>&lt;strong>Sécurité maintenue&lt;/strong> : Les substitutions de caractères et la ponctuation conservée rendent le mot de passe complexe.&lt;/li>
+&lt;/ol>
+&lt;h2 id="le-code--décortiquons-les-points-clés">Le code : décortiquons les points clés&lt;/h2>
+&lt;h3 id="la-structure-de-données">La structure de données&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-rust" data-lang="rust">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">PasswordGeneratorApp&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> input_text: String,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> generated_password: String,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Notre application est minimaliste : elle ne stocke que le texte d&amp;rsquo;entrée et le mot de passe généré.&lt;/p>
+&lt;h3 id="la-logique-de-génération">La logique de génération&lt;/h3>
+&lt;p>Le cœur de notre application réside dans la méthode &lt;code>generate_password&lt;/code>. Elle procède en deux étapes :&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Substitution des mots et caractères&lt;/strong> :&lt;/p>
+&lt;ul>
+&lt;li>Remplacement de mots complets (&amp;ldquo;and&amp;rdquo; → &amp;ldquo;&amp;amp;&amp;rdquo;, &amp;ldquo;to&amp;rdquo; → &amp;ldquo;2&amp;rdquo;, etc.)&lt;/li>
+&lt;li>Substitution de caractères (&amp;ldquo;a&amp;rdquo; → &amp;ldquo;@&amp;rdquo;, &amp;ldquo;i&amp;rdquo; → &amp;ldquo;1&amp;rdquo;, etc.)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Extraction des premières lettres&lt;/strong> :&lt;/p>
+&lt;ul>
+&lt;li>Conservation de la ponctuation&lt;/li>
+&lt;li>Prise en compte des espaces pour identifier les nouveaux mots&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="linterface-utilisateur">L&amp;rsquo;interface utilisateur&lt;/h3>
+&lt;p>Grâce au framework egui, nous avons une interface graphique simple et efficace avec :&lt;/p>
+&lt;ul>
+&lt;li>Une zone de texte pour entrer la phrase&lt;/li>
+&lt;li>Un bouton de génération&lt;/li>
+&lt;li>Un affichage clair du résultat&lt;/li>
+&lt;li>Un bouton de copie pour faciliter l&amp;rsquo;utilisation&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://greyrav.github.io/posts/gen-password/exemple.png" alt="Exemple de l&amp;rsquo;interface">&lt;/p>
+&lt;h2 id="perspectives-damélioration">Perspectives d&amp;rsquo;amélioration&lt;/h2>
+&lt;p>Ce projet pourrait être enrichi de plusieurs façons :&lt;/p>
+&lt;ul>
+&lt;li>Ajout de règles de substitution personnalisables&lt;/li>
+&lt;li>Vérification de la force du mot de passe généré&lt;/li>
+&lt;li>Support multilingue plus étendu&lt;/li>
+&lt;li>Export/import des règles de substitution&lt;/li>
+&lt;/ul>
+&lt;h2 id="conclusion">Conclusion&lt;/h2>
+&lt;p>Ce générateur de mot de passe propose une approche rafraîchissante de la gestion des mots de passe. En combinant la puissance de Rust, la simplicité d&amp;rsquo;egui et une approche mnémotechnique, nous obtenons un outil pratique qui réconcilie sécurité et facilité d&amp;rsquo;utilisation.&lt;/p>
+&lt;p>N&amp;rsquo;hésitez pas à contribuer au projet ou à l&amp;rsquo;adapter à vos besoins. Le code source complet est disponible sur &lt;a href="https://github.com/GreyRav/gen-password">GitHub&lt;/a>.&lt;/p></content></item><item><title>Media Player</title><link>https://greyrav.github.io/posts/media-player/</link><pubDate>Thu, 12 Dec 2024 13:51:16 +0100</pubDate><guid>https://greyrav.github.io/posts/media-player/</guid><description>&lt;p>Bonjour à tous et bienvenue sur mon blog concernant le Media Player. Le Media Player est un outil que je voulais concevoir afin de faire des projets d&amp;rsquo;apprentissage.&lt;/p>
 &lt;h2 id="quel-est-son-but-">Quel est son but ?&lt;/h2>
 &lt;p>Son but est simplement de pouvoir changer de musique/vidéo, et mettre lecture/pause. On peut bien évidemment changer le code pour en faire totalement autre chose comme par exemple un mini stream deck ou autre.&lt;/p>
 &lt;h2 id="quels-sont-les-composants-principaux-">Quels sont les composants principaux ?&lt;/h2>
