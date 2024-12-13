@@ -8,7 +8,7 @@ paginate = 5
 [params]
   # Couleur du thème : "orange" | "blue" | "red" | "green" | "pink"
   customCSS = ["css/custom.css"]
-  #themeColor = ["css/custom.css"]
+  themeColor = "default"
   
   # Si vous voulez le mode sombre
   showMenuItems = 2
