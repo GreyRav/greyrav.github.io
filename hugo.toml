@@ -3,12 +3,13 @@ languageCode = "fr-FR"
 defaultContentLanguage = "fr"
 title = "Blog de SRID"
 theme = "terminal"
+paginate = 5
 
 [params]
   # Couleur du thème : "orange" | "blue" | "red" | "green" | "pink"
   customCSS = ["css/custom.css"]
   themeColor = "default"
-  
+  favicon = "/favicon.ico"
   # Si vous voulez le mode sombre
   showMenuItems = 2
   fullWidthTheme = false
