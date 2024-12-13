@@ -3,6 +3,7 @@ languageCode = "fr-FR"
 defaultContentLanguage = "fr"
 title = "Blog de SRID"
 theme = "terminal"
+paginate = 5
 
 [params]
   # Couleur du thème : "orange" | "blue" | "red" | "green" | "pink"
