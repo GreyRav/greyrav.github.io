@@ -2,17 +2,27 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Blog de SRID</title>
-    <link>http://localhost:1313/posts/</link>
+    <link>https://greyrav.github.io/posts/</link>
     <description>Recent content in Posts on Blog de SRID</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>fr</language>
-    <lastBuildDate>Thu, 12 Dec 2024 13:51:16 +0100</lastBuildDate><atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 13 Dec 2024 14:04:21 +0100</lastBuildDate><atom:link href="https://greyrav.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Index</title>
+      <link>https://greyrav.github.io/posts/gen-password/</link>
+      <pubDate>Fri, 13 Dec 2024 14:04:21 +0100</pubDate>
+      
+      <guid>https://greyrav.github.io/posts/gen-password/</guid>
+      <description></description>
+      <content></content>
+    </item>
+    
     <item>
       <title>Media Player</title>
-      <link>http://localhost:1313/posts/media-player/</link>
+      <link>https://greyrav.github.io/posts/media-player/</link>
       <pubDate>Thu, 12 Dec 2024 13:51:16 +0100</pubDate>
       
-      <guid>http://localhost:1313/posts/media-player/</guid>
+      <guid>https://greyrav.github.io/posts/media-player/</guid>
       <description>&lt;p&gt;Bonjour à tous et bienvenue sur mon blog concernant le Media Player. Le Media Player est un outil que je voulais concevoir afin de faire des projets d&amp;rsquo;apprentissage.&lt;/p&gt;
 &lt;h2 id=&#34;quel-est-son-but-&#34;&gt;Quel est son but ?&lt;/h2&gt;
 &lt;p&gt;Son but est simplement de pouvoir changer de musique/vidéo, et mettre lecture/pause. On peut bien évidemment changer le code pour en faire totalement autre chose comme par exemple un mini stream deck ou autre.&lt;/p&gt;
@@ -171,8 +181,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Vous trouverez directement tout le projet sur GitHub &lt;a href=&#34;https://github.com/GreyRav/media-player/tree/main&#34;&gt;ICI&lt;/a&gt;, avec tous les frameworks, librairies et autres.&lt;/p&gt;
 &lt;p&gt;Voici à quoi ressemble la PCB :&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/posts/media-player/image1.png&#34; alt=&#34;PCB vue 1&#34;&gt;
-&lt;img src=&#34;http://localhost:1313/posts/media-player/image2.png&#34; alt=&#34;PCB vue 2&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://greyrav.github.io/posts/media-player/image1.png&#34; alt=&#34;PCB vue 1&#34;&gt;
+&lt;img src=&#34;https://greyrav.github.io/posts/media-player/image2.png&#34; alt=&#34;PCB vue 2&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Si vous voulez l&amp;rsquo;acheter pour soutenir le projet ou alors vous amuser avec, vous la retrouverez sur mon site : &lt;a href=&#34;https://openandhack.fr&#34;&gt;Open &amp;amp; Hack&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Merci d&amp;rsquo;avoir pris le temps de lire ce post !&lt;/p&gt;
 </content>
